@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { localData } from '../Services/ProtectRoutes'
 
 export default function Home() {
+
+  const user = useContext(localData);
+
   return (
-    <div>Home <i className='fa-solid fa-user'></i></div>
+    <div>
+      {user.role == 1 && JSON.stringify(user)}
+    </div>
   )
 }
