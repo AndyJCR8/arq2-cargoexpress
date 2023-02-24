@@ -9,12 +9,12 @@ conexion = MySQL(app)
 @app.route('/usuarios')
 def listar_usuarios():
     try:
-        cursor = conexion.connection(app)
-        #sql="SELECT Usuario FROM tblusuario"
-        #cursor.execute(sql)
-        #datos = cursor.fetchall()
-        #print(datos)
-        return cursor
+        cursor = conexion.connection.cursor()
+        sql="SELECT Usuario FROM tblusuario"
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+        print(datos)
+        return "Datos Listados :)"
     except Exception as ex:
         return "Error",ex
 def pagina_no_encontrada(error):
