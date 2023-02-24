@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_mysqldb import MySQL
 from config import config
 
@@ -10,13 +10,18 @@ conexion = MySQL(app)
 def listar_usuarios():
     try:
         cursor = conexion.connection.cursor()
-        sql="SELECT Usuario FROM tblusuario"
+        sql="SELECT IdUsuario, Usuario, Nombre, Email, Telefono, TipoUsuario FROM tblusuario, tbltipousuario where tblusuario.IdTipoUsuario = tbltipousuario.IdTipoUsuario"
         cursor.execute(sql)
         datos = cursor.fetchall()
-        print(datos)
-        return "Datos Listados :)"
+        usuarios = []
+        for i in datos:
+            usuario={'IdUsuario': i[0],'Usuario':i[1],'Nombre':i[2],'Email':i[3],'Telefono':i[4],'TipoUsuario':i[5]}
+            usuarios.append(usuario)
+        #print(datos)
+        return jsonify({'usuarios':usuarios, 'mensaje':'usuarios listados'})
+        #return "Hola"
     except Exception as ex:
-        return "Error",ex
+        return jsonify({'mensaje':"Error"})
 def pagina_no_encontrada(error):
     return"<h1>La página que intentas buscar no existe :/ </h1>"
 if __name__=='__main__':
