@@ -52,12 +52,18 @@ def leer_Cursor(codigo):
 def registrarUsuario():
     try:
         cursor = conexion.connection.cursor() 
-        sql = """INSERT INTO tblusuarios (Usuario, Nombre, Email, Telefono, Contraseña, IdOficina, idTipoUsuario) 
-        VALUES ('{0}','{1}','{2}','{3}','{4}',{5},{6})""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'])
-        cursor.execute(sql)
-        conexion.connection.commit() # confirma la acción de inserción
-        #print(request.json)
-        return jsonify({'mensaje':"Usuario Registrado"}) 
+        sql="SELECT Usuario FROM tblusuarios WHERE tblusuarios.Usuario = '{0}'".format(request.json['Usuario'])
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos==None):
+            sql = """INSERT INTO tblusuarios (Usuario, Nombre, Email, Telefono, Contraseña, IdOficina, idTipoUsuario) 
+            VALUES ('{0}','{1}','{2}','{3}','{4}',{5},{6})""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'])
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Usuario Registrado"}) 
+        else:
+            return jsonify({'mensaje':"El usuario ya existe."})
     except Exception as ex:
          return jsonify({'mensaje':"Error"}) 
 
