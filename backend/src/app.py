@@ -10,7 +10,7 @@ conexion = MySQL(app)
 def listar_usuarios():
     try:
         cursor = conexion.connection.cursor()
-        sql="SELECT IdUsuario, Usuario, Nombre, Email, Telefono, TipoUsuario FROM tblusuario, tbltipousuario where tblusuario.IdTipoUsuario = tbltipousuario.IdTipoUsuario"
+        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM ((tblusuarios INNER JOIN tbltipousuario ON tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario) INNER JOIN tbloficina ON tblusuarios.IdOficina=tbloficina.IdOficina)"
         cursor.execute(sql)
         datos = cursor.fetchall()
         usuarios = []
