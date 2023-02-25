@@ -3,27 +3,50 @@ from flask_mysqldb import MySQL
 from config import config
 
 app = Flask(__name__)
-
+#Cnexión con la BD
 conexion = MySQL(app)
 
+#Defino la ruta y el método
 @app.route('/usuarios',methods=['GET'])
-def listar_usuarios():
+def listar_usuarios(): #Función para listar usuarios
     try:
-        cursor = conexion.connection.cursor()
+        cursor = conexion.connection.cursor() #Crea la conexión
         sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM ((tblusuarios INNER JOIN tbltipousuario ON tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario) INNER JOIN tbloficina ON tblusuarios.IdOficina=tbloficina.IdOficina)"
-        cursor.execute(sql)
-        datos = cursor.fetchall()
-        usuarios = []
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchall()#Recibe todo el registro, similar a un .read
+        usuarios = [] # Genero una lista para almacenar los datos
         for i in datos:
+            #Como se convierte el dato en json, se recorre cada linea para poder almacenarlo, primero en una variable por fila, para luego almacenarla en la lista principal
             usuario={'IdUsuario': i[0],'Usuario':i[1],'Nombre':i[2],'Email':i[3],'Telefono':i[4],'TipoUsuario':i[5]}
             usuarios.append(usuario)
         #print(datos)
+        #Se devuelve la lista en formato json
         return jsonify({'usuarios':usuarios, 'mensaje':'usuarios listados'})
         #return "Hola"
     except Exception as ex:
-        return jsonify({'mensaje':"Error"})
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
 
+
+#Mostrar datos de un solo registro
 @app.route('/usuarios/<codigo>',methods=['GET'])
+def leer_Cursor(codigo):
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM tblusuarios, tbloficina,tbltipousuario WHERE tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario AND tblusuarios.IdOficina=tbloficina.IdOficina AND IdUsuario='{0}'".format(codigo)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()#Recibe todo el registro, similar a un .read
+        
+        if datos != None:
+            usuario={'IdUsuario': datos[0],'Usuario':datos[1],'Nombre':datos[2],'Email':datos[3],'Telefono':datos[4],'TipoUsuario':datos[5]}
+            return jsonify({'usuario':usuario, 'mensaje':'usuarios listados'})
+        else:
+            return jsonify({'mensaje':"Usuario no encontrado"})
+        #print(datos)
+        #Se devuelve la lista en formato json
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+
 
 def pagina_no_encontrada(error):
     return"<h1>La página que intentas buscar no existe :/ </h1>"
