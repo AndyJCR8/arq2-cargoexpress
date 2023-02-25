@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 conexion = MySQL(app)
 
-@app.route('/usuarios')
+@app.route('/usuarios',methods=['GET'])
 def listar_usuarios():
     try:
         cursor = conexion.connection.cursor()
@@ -22,6 +22,9 @@ def listar_usuarios():
         #return "Hola"
     except Exception as ex:
         return jsonify({'mensaje':"Error"})
+
+@app.route('/usuarios/<codigo>',methods=['GET'])
+
 def pagina_no_encontrada(error):
     return"<h1>La página que intentas buscar no existe :/ </h1>"
 if __name__=='__main__':
