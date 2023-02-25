@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from config import config
 
@@ -47,9 +47,22 @@ def leer_Cursor(codigo):
     except Exception as ex:
         return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
 
+# post
+@app.route('/usuarios', methods=['POST'])
+def registrarUsuario():
+    try:
+        cursor = conexion.connection.cursor() 
+        sql = """INSERT INTO tblusuarios (Usuario, Nombre, Email, Telefono, Contraseña, IdOficina, idTipoUsuario) 
+        VALUES ('{0}','{1}','{2}','{3}','{4}',{5},{6})""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'])
+        cursor.execute(sql)
+        conexion.connection.commit() # confirma la acción de inserción
+        #print(request.json)
+        return jsonify({'mensaje':"Usuario Registrado"}) 
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
 
 def pagina_no_encontrada(error):
-    return"<h1>La página que intentas buscar no existe :/ </h1>"
+    return"<h1>La página que intentas buscar no existe :/ </h1>", 404
 if __name__=='__main__':
     app.config.from_object(config['development'])
     app.register_error_handler(404,pagina_no_encontrada)
