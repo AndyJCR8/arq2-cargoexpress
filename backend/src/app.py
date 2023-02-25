@@ -28,11 +28,11 @@ def listar_usuarios(): #Función para listar usuarios
 
 
 #Mostrar datos de un solo registro
-@app.route('/usuarios/<codigo>',methods=['GET'])
-def leer_Cursor(codigo):
+@app.route('/usuarios/<idusuario>',methods=['GET'])
+def leer_Cursor(idusuario):
     try:
         cursor = conexion.connection.cursor() #Crea la conexión
-        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM tblusuarios, tbloficina,tbltipousuario WHERE tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario AND tblusuarios.IdOficina=tbloficina.IdOficina AND IdUsuario='{0}'".format(codigo)
+        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM tblusuarios, tbloficina,tbltipousuario WHERE tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario AND tblusuarios.IdOficina=tbloficina.IdOficina AND IdUsuario='{0}'".format(idusuario)
         cursor.execute(sql)#Se ejecuta el sql
         datos = cursor.fetchone()#Recibe todo el registro, similar a un .read
         
@@ -62,6 +62,43 @@ def registrarUsuario():
             conexion.connection.commit() # confirma la acción de inserción
             #print(request.json)
             return jsonify({'mensaje':"Usuario Registrado"}) 
+        else:
+            return jsonify({'mensaje':"El usuario ya existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+     
+@app.route('/usuarios/<idusuario>', methods=['DELETE'])
+def eliminarUsuario(idusuario):
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Usuario FROM tblusuarios WHERE tblusuarios.IdUsuario = {0}".format(idusuario)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos!=None):
+            sql = "DELETE FROM tblusuarios WHERE IdUsuario={0}".format(idusuario)
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Usuario eliminado"}) 
+        else:
+            return jsonify({'mensaje':"El usuario no existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+
+@app.route('/usuarios/<idusuario>', methods=['PUT'])
+def actualizarUsuario(idusuario):
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Usuario FROM tblusuarios WHERE tblusuarios.Usuario = '{0}' AND tblusuarios.IdUsuario!={1}".format(request.json['Usuario'],idusuario)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos==None):
+            sql = """UPDATE tblusuarios 
+            SET Usuario='{0}', Nombre='{1}', Email='{2}', Telefono='{3}', Contraseña='{4}', IdOficina={5}, idTipoUsuario={6}""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'])
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Usuario actualizado"}) 
         else:
             return jsonify({'mensaje':"El usuario ya existe."})
     except Exception as ex:
