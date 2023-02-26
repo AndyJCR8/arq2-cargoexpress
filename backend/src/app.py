@@ -115,6 +115,102 @@ def actualizarUsuario(idusuario):
 
 
 #----------------------------CRUD OFICINA
+#Listar oficinas con metodo GET
+@app.route('/oficinas',methods=['GET'])
+def listar_oficinas(): #Función para listar oficinas
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT IdOficina, Nombre, Direccion, Telefono FROM tbloficina"
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchall()#Recibe todo el registro, similar a un .read
+        oficinas = [] # Genero una lista para almacenar los datos
+        for i in datos:
+            #Como se convierte el dato en json, se recorre cada linea para poder almacenarlo, primero en una variable por fila, para luego almacenarla en la lista principal
+            oficina={'IdOficina': i[0],'Nombre':i[1],'Direccion':i[2],'Telefono':i[3]}
+            oficinas.append(oficina)
+        #print(datos)
+        #Se devuelve la lista en formato json
+        return jsonify({'oficinas':oficinas, 'mensaje':'lista de oficinas'})
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+
+#Mostrar datos de una sola oficina con metodo GET
+@app.route('/oficinas/<idoficina>',methods=['GET'])
+def leer_oficina(idoficina):
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT IdOficina, Nombre, Direccion, Telefono FROM tbloficina WHERE IdOficina ='{0}'".format(idoficina)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()#Recibe todo el objeto oficina, similar a un .read
+        
+        if datos != None:
+            oficina={'IdOficina': datos[0],'Nombre':datos[1],'Direccion':datos[2],'Telefono':datos[3]}
+            return jsonify({'oficina':oficina, 'mensaje':'Datos de oficina'})
+        else:
+            return jsonify({'mensaje':"Oficina no encontrada"})
+        #print(datos)
+        #Se devuelve la lista en formato json
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+
+# insertar oficina con metodo POST
+@app.route('/oficinas', methods=['POST'])
+def registrarOficina():
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Nombre FROM tbloficina WHERE Nombre = '{0}'".format(request.json['Nombre'])
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos==None):
+            sql = """INSERT INTO tbloficina (Nombre, Direccion, Telefono) 
+            VALUES ('{0}','{1}','{2}')""".format(request.json['Nombre'],request.json['Direccion'],request.json['Telefono'])
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Oficina registrada con éxito"}) 
+        else:
+            return jsonify({'mensaje':"La oficina ya existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+
+@app.route('/oficinas/<idoficina>', methods=['DELETE'])
+def eliminarOficina(idoficina):
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Nombre FROM tbloficina WHERE IdOficina = {0}".format(idoficina)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos!=None):
+            sql = "DELETE FROM tbloficina WHERE IdOficina={0}".format(idoficina)
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Oficina eliminada con exito"}) 
+        else:
+            return jsonify({'mensaje':"La oficina no existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+
+@app.route('/oficinas/<idoficina>', methods=['PUT'])
+def actualizarOficina(idoficina):
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Nombre FROM tbloficina WHERE idOficina={0}".format(idoficina)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos!=None):
+            sql = """UPDATE tbloficina
+            SET Nombre='{0}', Direccion='{1}', Telefono='{2}' WHERE idOficina={3}""".format(request.json['Nombre'],request.json['Direccion'],request.json['Telefono'],idoficina)
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Oficina actualizada"}) 
+        else:
+            return jsonify({'mensaje':"La oficina no existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
 
 
 
