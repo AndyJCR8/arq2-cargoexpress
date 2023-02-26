@@ -7,10 +7,12 @@ import EditUser from '../Pages/Users/EditUser';
 import Login from '../Pages/Login/Login';
 import Logout from '../Pages/Login/Logout';
 import ProtectRoutes from '../Services/ProtectRoutes';
+import EditClient from '../Pages/Clients/editClient';
+import AddClient from '../Pages/Clients/addClient';
 
 
 function App() {
-  const [user, setUser] = useState({ authenticated: true, role: 1});
+  const [user, setUser] = useState({ authenticated: true, role: 2});
   
   return (
     <div className="App">
@@ -30,7 +32,8 @@ function App() {
                   user.role == 1 ?
                   <>
                     <Link to="addUser" className='nvItem button btnAdd'>Nuevo usuario</Link>
-                  </> : null
+                  </> : user.role == 2 ? <Link to="addClient" className='nvItem button btnAdd'>Nuevo cliente</Link>
+                  : null
                 }
               </div>
             </nav>
@@ -42,7 +45,11 @@ function App() {
                   user.role == 1 ?
                   <>
                     <Route path='addUser' element={<AddUser/>}/>
-                    <Route path='editCliente/:id' element={<EditUser/>}/>
+                    <Route path='editUser/:id' element={<EditUser/>}/>
+                  </> : user.role == 2 ?
+                  <>
+                    <Route path='addClient' element={<AddClient/>}/>
+                    <Route path='editClient/:id' element={<EditClient/>}/>
                   </> : null
                 }
                 <Route path='*' element={<Navigate to="/"></Navigate>}></Route>
