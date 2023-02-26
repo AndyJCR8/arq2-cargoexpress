@@ -1,8 +1,60 @@
-.button {
+.Navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   padding: 1rem 0.5rem;
-  background-color: white;
+  background-color: rgb(251, 251, 251);
   
- .btnAdd {
+  .nvItem {
+    margin: 0 0.5rem;
+  }
 
- } 
+  .titleContainer {
+    display: flex; justify-content: center; align-items: center;
+    margin: 0 1rem;
+
+    .title {
+      margin-bottom: 0;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+.button {
+  font-size: 1.1rem;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.2);
+  outline: none; border: none;
+  border-radius: 10px;
+  
+ &.btnAdd    { color: rgb(73, 122, 255) !important; }
+ &.btnEdit   { color: rgb(255, 146, 73) !important; }
+ &.btnDelete { color: rgb(255, 73, 73)  !important; }
+
+ &:hover { box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.3); }
+ &:active { scale: 0.95; }
+ 
+ transition: all ease-out 75ms;
+}
+
+.formInput {
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  background-color: white;
+  box-shadow: 0px 1px 10px 0px rgba(0,0,0,0.09);
+  outline: none; border: none;
+  border-radius: 10px;
+
+  transition: all ease-out 75ms;
 }

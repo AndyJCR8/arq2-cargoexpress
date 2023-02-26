@@ -1,4 +1,10 @@
-body, html {
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+
+
+body, html, #root, .App {
+
+  font-family: 'Tilt Neon', cursive !important;
+
   margin: 0;
   display: flex; flex-direction: column;
   

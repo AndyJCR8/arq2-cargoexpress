@@ -1,17 +1,17 @@
 import '../Sass/App.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import Home from '../Pages/Home';
-import AddUser from '../Pages/AddUser';
-import EditUser from '../Pages/EditUser';
-import Login from '../Pages/Login';
-import Logout from '../Pages/Logout';
+import AddUser from '../Pages/Users/AddUser';
+import EditUser from '../Pages/Users/EditUser';
+import Login from '../Pages/Login/Login';
+import Logout from '../Pages/Login/Logout';
 import ProtectRoutes from '../Services/ProtectRoutes';
 
 
 function App() {
-  const [user, setUser] = useState({ loggedIn: false, role: 2});
-
+  const [user, setUser] = useState({ authenticated: true, role: 1});
+  
   return (
     <div className="App">
       <Routes>
@@ -19,17 +19,19 @@ function App() {
         <Route path='/logout' element={<Logout/>}/>
         <Route element= {
           <ProtectRoutes user={user} setUser={setUser}>
-            <nav className='nav navbar'>
+            <nav className='Navbar'>
+              <div className='titleContainer'>
+                <p className='title'>CargoExpress</p>
+              </div>
               <div className='buttonsContainer'>
+                <Link to="/" className='nvItem button btnAdd'>Inicio</Link>
                 {
                   /*SI EL ROL DEL USUARIO ES IGUAL A 1 SE GENERA EL BOTÓN PARA AÑADIR UN NUEVO USUARIO*/
-                  user.role == 1 &&
+                  user.role == 1 ?
                   <>
-                    <Link to="addUser" className='button btnAdd'>Nuevo cliente</Link>
-                  </>
+                    <Link to="addUser" className='nvItem button btnAdd'>Nuevo usuario</Link>
+                  </> : null
                 }
-                 
-                <Link to="/" className='button btnAdd'>Home</Link>
               </div>
             </nav>
             <div className='AppContainer'>
@@ -37,11 +39,11 @@ function App() {
                 <Route path='/' element={<Home/>}/>
                 {
                   /*SI EL ROL DEL USUARIO ES IGUAL A 1 SE GENERAN LAS RUTAS PARA ESE USUARIO*/
-                  user.role == 1 &&
+                  user.role == 1 ?
                   <>
                     <Route path='addUser' element={<AddUser/>}/>
                     <Route path='editCliente/:id' element={<EditUser/>}/>
-                  </>
+                  </> : null
                 }
                 <Route path='*' element={<Navigate to="/"></Navigate>}></Route>
               </Routes>

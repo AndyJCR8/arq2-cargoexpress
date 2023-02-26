@@ -7,13 +7,14 @@ export default function ProtectRoutes({user, setUser, children}) {
   const [userVerified, setUserVerified] = useState(false);
   
   useEffect(() => {
-    setUserVerified(user.loggedIn);
+    setUserVerified(user.authenticated);
+    //console.log(userVerified);
   }, []);
 
   return (
     <>
       {
-        userVerified ?
+        user.authenticated ?
         <localData.Provider value={user}> {children} </localData.Provider> 
         : 
         <Navigate to={"login"}/>
