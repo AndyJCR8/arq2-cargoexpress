@@ -6,6 +6,9 @@ app = Flask(__name__)
 #Cnexión con la BD
 conexion = MySQL(app)
 
+
+#----------------------------CRUD USUARIOS
+
 #Defino la ruta y el método
 @app.route('/usuarios',methods=['GET'])
 def listar_usuarios(): #Función para listar usuarios
@@ -103,6 +106,17 @@ def actualizarUsuario(idusuario):
             return jsonify({'mensaje':"El usuario ya existe."})
     except Exception as ex:
          return jsonify({'mensaje':"Error"}) 
+
+
+#----------------------------CRUD CLIENTES
+
+
+
+
+
+#----------------------------CRUD OFICINA
+
+
 
 def pagina_no_encontrada(error):
     return"<h1>La página que intentas buscar no existe :/ </h1>", 404
