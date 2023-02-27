@@ -109,6 +109,61 @@ def actualizarUsuario(idusuario):
 
 
 #----------------------------CRUD CLIENTES
+@app.route('/clientes',methods=['GET'])
+def listar_clientes(): #Función para listar usuarios
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT idCliente, Nombre, nit, Direccion, Telefono, Email FROM tblCliente"
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchall()#Recibe todo el registro, similar a un .read
+        clientes = [] # Genero una lista para almacenar los datos
+        for i in datos:
+            #Como se convierte el dato en json, se recorre cada linea para poder almacenarlo, primero en una variable por fila, para luego almacenarla en la lista principal
+            cliente={'idCliente': i[0],'Nombre':i[1],'nit':i[2],'Direccion':i[3],'Telefono':i[4],'Email':i[5]}
+            clientes.append(cliente)
+        #print(datos)
+        #Se devuelve la lista en formato json
+        return jsonify({'Clientes':clientes, 'mensaje':'Clientes listados'})
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+#Mostrar datos de una solo cliente con metodo GET
+@app.route('/clientes/<idClientes>',methods=['GET'])
+def leer_cliente(idClientes):
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT idCliente, Nombre, nit, Direccion, Telefono, Email FROM tblCliente WHERE idCliente ='{0}'".format(idClientes)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()#Recibe todo el objeto oficina, similar a un .read
+        
+        if datos != None:
+            cliente={'idCliente': datos[0],'Nombre':datos[1],'nit':datos[2],'Direccion':datos[3],'Telefono':datos[4],'Email':datos[5]}
+            return jsonify({'oficina':cliente, 'mensaje':'Datos de Clientes'})
+        else:
+            return jsonify({'mensaje':"Cliente no encontrado"})
+        #print(datos)
+        #Se devuelve la lista en formato json
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+
+# insertar clientes con metodo POST
+@app.route('/clientes', methods=['POST'])
+def registrarCliente():
+    try:
+        cursor = conexion.connection.cursor() 
+        sql = """INSERT INTO tblCliente (Nombre, nit,  Direccion, Telefono, Email) 
+            VALUES ('{0}','{1}','{2}', '{3}', '{4}')""".format(request.json['Nombre'],request.json['nit'],request.json['Direccion'],request.json['Telefono'],request.json['Email'])
+        cursor.execute(sql)
+        conexion.connection.commit() # confirma la acción de inserción
+        #print(request.json)
+        return jsonify({'mensaje':"Cliente registrado con éxito"}) 
+      
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+
+
+
 
 
 
