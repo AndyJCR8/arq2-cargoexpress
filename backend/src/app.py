@@ -162,7 +162,23 @@ def registrarCliente():
     except Exception as ex:
          return jsonify({'mensaje':"Error"}) 
 
-
+@app.route('/clientes/<idclientes>', methods=['DELETE'])
+def eliminarCliente(idclientes):
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT Nombre FROM tblCliente WHERE idCliente = {0}".format(idclientes)
+        cursor.execute(sql)#Se ejecuta el sql|
+        datos = cursor.fetchone()
+        if(datos!=None):
+            sql = "DELETE FROM tblCliente WHERE idCliente={0}".format(idclientes)
+            cursor.execute(sql)
+            conexion.connection.commit() # confirma la acción de inserción
+            #print(request.json)
+            return jsonify({'mensaje':"Cliente eliminado con exito"}) 
+        else:
+            return jsonify({'mensaje':"El cliente no existe."})
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
 
 
 
