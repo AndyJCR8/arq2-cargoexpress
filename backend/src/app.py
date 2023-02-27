@@ -147,6 +147,21 @@ def leer_cliente(idClientes):
     except Exception as ex:
         return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
 
+# insertar clientes con metodo POST
+@app.route('/clientes', methods=['POST'])
+def registrarCliente():
+    try:
+        cursor = conexion.connection.cursor() 
+        sql = """INSERT INTO tblCliente (Nombre, nit,  Direccion, Telefono, Email) 
+            VALUES ('{0}','{1}','{2}', '{3}', '{4}')""".format(request.json['Nombre'],request.json['nit'],request.json['Direccion'],request.json['Telefono'],request.json['Email'])
+        cursor.execute(sql)
+        conexion.connection.commit() # confirma la acción de inserción
+        #print(request.json)
+        return jsonify({'mensaje':"Cliente registrado con éxito"}) 
+      
+    except Exception as ex:
+         return jsonify({'mensaje':"Error"}) 
+
 
 
 
