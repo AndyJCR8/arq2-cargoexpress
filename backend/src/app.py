@@ -109,6 +109,28 @@ def actualizarUsuario(idusuario):
 
 
 #----------------------------CRUD CLIENTES
+@app.route('/clientes',methods=['GET'])
+def listar_clientes(): #Función para listar usuarios
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT idCliente, Nombre, nit, Direccion, Telefono, Email FROM tblCliente"
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchall()#Recibe todo el registro, similar a un .read
+        clientes = [] # Genero una lista para almacenar los datos
+        for i in datos:
+            #Como se convierte el dato en json, se recorre cada linea para poder almacenarlo, primero en una variable por fila, para luego almacenarla en la lista principal
+            cliente={'idCliente': i[0],'Nombre':i[1],'nit':i[2],'Direccion':i[3],'Telefono':i[4],'Email':i[5]}
+            clientes.append(cliente)
+        #print(datos)
+        #Se devuelve la lista en formato json
+        return jsonify({'Clientes':clientes, 'mensaje':'Clientes listados'})
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
+
+
+
+
 
 
 
