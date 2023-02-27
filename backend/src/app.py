@@ -127,7 +127,25 @@ def listar_clientes(): #Función para listar usuarios
         #return "Hola"
     except Exception as ex:
         return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
-
+#Mostrar datos de una solo cliente con metodo GET
+@app.route('/clientes/<idClientes>',methods=['GET'])
+def leer_cliente(idClientes):
+    try:
+        cursor = conexion.connection.cursor() #Crea la conexión
+        sql="SELECT idCliente, Nombre, nit, Direccion, Telefono, Email FROM tblCliente WHERE idCliente ='{0}'".format(idClientes)
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()#Recibe todo el objeto oficina, similar a un .read
+        
+        if datos != None:
+            cliente={'idCliente': datos[0],'Nombre':datos[1],'nit':datos[2],'Direccion':datos[3],'Telefono':datos[4],'Email':datos[5]}
+            return jsonify({'oficina':cliente, 'mensaje':'Datos de Clientes'})
+        else:
+            return jsonify({'mensaje':"Cliente no encontrado"})
+        #print(datos)
+        #Se devuelve la lista en formato json
+        #return "Hola"
+    except Exception as ex:
+        return jsonify({'mensaje':"Error"}) #Si algún error, lo devuelve, siempre en formato json
 
 
 
