@@ -180,8 +180,15 @@ def eliminarCliente(idclientes):
     except Exception as ex:
          return jsonify({'mensaje':"Error"}) 
 
-
-
+@app.route('/clientes/<idclientes>', methods=['PUT'])
+def actualizarCliente(idclientes):
+        cursor = conexion.connection.cursor() 
+        sql = """UPDATE tblCliente
+        SET Nombre='{0}', nit='{1}', Direccion='{2}', Telefono='{3}', Email='{4}' WHERE idCliente={5}""".format(request.json['Nombre'],request.json['nit'],request.json['Direccion'],request.json['Telefono'],request.json['Email'],idclientes)
+        cursor.execute(sql)
+        conexion.connection.commit() # confirma la acción de inserción
+        #print(request.json)
+        return jsonify({'mensaje':"Cliente actualizada"}) 
 
 
 
