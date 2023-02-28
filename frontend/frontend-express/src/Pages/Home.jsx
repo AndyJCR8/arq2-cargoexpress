@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { localData } from '../Services/ProtectRoutes'
 import { useNavigate } from 'react-router-dom';
+import getData from '../Services/getData';
+import Modal from '../Components/Modal';
 
 export default function Home() {
 
@@ -42,10 +44,18 @@ function ClientsView() {
         Email: "email2@gmail.com"
       },
     ])
+
+    const getClients = async () => {
+      const data = getData({PATH: "clientes", METHOD: "GET"})();
+      console.log(data);
+    }
+    getClients();
   }, []);
 
   return (
     <div>
+      <Modal modalID="clientsModal" title="Eliminar registro" message="¿Está seguro de eliminar el registro?" callback={() => {}}/>
+      <button className='button btnAdd' data-bs-toggle="modal" data-bs-target="#clientsModal">Modal</button>
       {/* Vista para ciertos usuarios como secretarias */}
       {/* Las secretarias modifican los clientes */}
 
