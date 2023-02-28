@@ -1,15 +1,19 @@
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from config import config
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 #Cnexión con la BD
+#CORS(app)
+CORS(app,resources={r"/*":{"origins":"http://localhost"}})
 conexion = MySQL(app)
 
 
 #----------------------------CRUD USUARIOS
 
 #Defino la ruta y el método
+#@cross_origin
 @app.route('/usuarios',methods=['GET'])
 def listar_usuarios(): #Función para listar usuarios
     try:
