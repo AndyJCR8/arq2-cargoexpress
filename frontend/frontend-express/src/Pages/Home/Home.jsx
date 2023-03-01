@@ -49,8 +49,9 @@ function ClientsView() {
     ])
 
     const getClients = async () => {
-      const { data } = await getData({PATH: "usuarios", METHOD: "GET"})();
-      console.log(data.usuarios);
+      const { data } = await getData({PATH: "clientes", METHOD: "GET"})();
+      //console.log(data.Clientes);
+      setClients(data.Clientes);
     }
     getClients();
   }, []);
@@ -70,42 +71,42 @@ function ClientsView() {
       <button class="button btnAdd" type='button' onClick={() => { setNumber(number + 1); console.log(number)}}>Añadir</button> */}
 
       <table className="table table-striped table-hove">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">NIT</th>
-          <th scope="col">Dirección</th>
-          <th scope="col">Teléfono</th>
-          <th scope="col">Email</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          clients.map(data => {
-            return (
-              <tr>
-                <th scope="row">{data.ID}</th>
-                <td>{data.Nombre}</td>
-                <td>{data.NIT}</td>
-                <td>{data.Direccion}</td>
-                <td>{data.Telefono}</td>
-                <td>{data.Email}</td>
-                <td>
-                  <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.ID)}>
-                    <i className="fa fa-pen-to-square"></i>Editar
-                  </button>
-                  <button className='button btnDelete'>
-                    <i className="fa fa-trash"></i>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">NIT</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Email</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            clients.map(data => {
+              return (
+                <tr>
+                  <th scope="row">{data.ID}</th>
+                  <td>{data.Nombre}</td>
+                  <td>{data.NIT}</td>
+                  <td>{data.Direccion}</td>
+                  <td>{data.Telefono}</td>
+                  <td>{data.Email}</td>
+                  <td>
+                    <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.ID)}>
+                      <i className="fa fa-pen-to-square"></i>Editar
+                    </button>
+                    <button className='button btnDelete'>
+                      <i className="fa fa-trash"></i>
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
     </div>
   )
