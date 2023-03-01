@@ -18,13 +18,13 @@ conexion = MySQL(app)
 def listar_usuarios(): #Función para listar usuarios
     try:
         cursor = conexion.connection.cursor() #Crea la conexión
-        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM ((tblusuarios INNER JOIN tbltipousuario ON tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario) INNER JOIN tbloficina ON tblusuarios.IdOficina=tbloficina.IdOficina)"
+        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, tblusuarios.IdTipoUsuario, tbloficina.Nombre FROM ((tblusuarios INNER JOIN tbltipousuario ON tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario) INNER JOIN tbloficina ON tblusuarios.IdOficina=tbloficina.IdOficina)"
         cursor.execute(sql)#Se ejecuta el sql
         datos = cursor.fetchall()#Recibe todo el registro, similar a un .read
         usuarios = [] # Genero una lista para almacenar los datos
         for i in datos:
             #Como se convierte el dato en json, se recorre cada linea para poder almacenarlo, primero en una variable por fila, para luego almacenarla en la lista principal
-            usuario={'IdUsuario': i[0],'Usuario':i[1],'Nombre':i[2],'Email':i[3],'Telefono':i[4],'TipoUsuario':i[5]}
+            usuario={'IdUsuario': i[0],'Usuario':i[1],'Nombre':i[2],'Email':i[3],'Telefono':i[4],'IdTipoUsuario':i[5]}
             usuarios.append(usuario)
         #print(datos)
         #Se devuelve la lista en formato json
@@ -39,12 +39,12 @@ def listar_usuarios(): #Función para listar usuarios
 def leer_Cursor(idusuario):
     try:
         cursor = conexion.connection.cursor() #Crea la conexión
-        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, TipoUsuario, tbloficina.Nombre FROM tblusuarios, tbloficina,tbltipousuario WHERE tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario AND tblusuarios.IdOficina=tbloficina.IdOficina AND IdUsuario='{0}'".format(idusuario)
+        sql="SELECT IdUsuario, Usuario, tblusuarios.Nombre, Email, tblusuarios.Telefono, tblusuarios.IdTipoUsuario, tbloficina.Nombre FROM tblusuarios, tbloficina,tbltipousuario WHERE tblusuarios.IdTipoUsuario = tbltipousuario.IdTipoUsuario AND tblusuarios.IdOficina=tbloficina.IdOficina AND IdUsuario='{0}'".format(idusuario)
         cursor.execute(sql)#Se ejecuta el sql
         datos = cursor.fetchone()#Recibe todo el registro, similar a un .read
         
         if datos != None:
-            usuario={'IdUsuario': datos[0],'Usuario':datos[1],'Nombre':datos[2],'Email':datos[3],'Telefono':datos[4],'TipoUsuario':datos[5]}
+            usuario={'IdUsuario': datos[0],'Usuario':datos[1],'Nombre':datos[2],'Email':datos[3],'Telefono':datos[4],'IdTipoUsuario':datos[5]}
             return jsonify({'usuario':usuario, 'mensaje':'usuarios listados'})
         else:
             return jsonify({'mensaje':"Usuario no encontrado"})
