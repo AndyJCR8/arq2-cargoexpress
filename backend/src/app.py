@@ -6,9 +6,11 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 #Cnexión con la BD
 #CORS(app)
-CORS(app,resources={r"/*":{"origins":"http://localhost"}})
+#CORS(app,resources={r"/*":{"origins":"http://localhost"}})
 conexion = MySQL(app)
 
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 #----------------------------CRUD USUARIOS
 

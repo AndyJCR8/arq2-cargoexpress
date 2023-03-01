@@ -7,7 +7,7 @@ export default function getData({PATH, METHOD}) {
   
   const data = {
     "GET": async () => {
-      const res = (axios.get(`${URL}/${PATH}`)).data;
+      const res = await (axios.get(`${URL}/${PATH}`));
       return res;
     },
     "POST": async (data) => {

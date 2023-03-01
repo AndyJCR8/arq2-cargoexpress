@@ -49,8 +49,8 @@ function ClientsView() {
     ])
 
     const getClients = async () => {
-      const data = await getData({PATH: "usuarios", METHOD: "GET"})();
-      console.log(data);
+      const { data } = await getData({PATH: "usuarios", METHOD: "GET"})();
+      console.log(data.usuarios);
     }
     getClients();
   }, []);
