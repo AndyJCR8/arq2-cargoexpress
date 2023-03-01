@@ -1,6 +1,10 @@
+import "./Home.scss";
 import React, { useState, useEffect, useContext } from 'react'
-import { localData } from '../Services/ProtectRoutes'
+import { localData } from '../../Services/ProtectRoutes'
 import { useNavigate } from 'react-router-dom';
+import getData from '../../Services/getData';
+import Modal from '../../Components/Modal';
+import Loader from "../../Components/Loader";
 
 export default function Home() {
 
@@ -18,8 +22,9 @@ export default function Home() {
 }
 
 function ClientsView() {
-
+  const [isLoading, setIsLoading] = useState(true);
   const [clients, setClients] = useState([]);
+  const [message, setMessage] = useState("");
   //const [number, setNumber] = useState(0);
   const navigate = useNavigate();
 
@@ -42,10 +47,22 @@ function ClientsView() {
         Email: "email2@gmail.com"
       },
     ])
+
+    const getClients = async () => {
+      const data = await getData({PATH: "usuarios", METHOD: "GET"})();
+      console.log(data);
+    }
+    getClients();
   }, []);
 
   return (
-    <div>
+    <div className="homeContainer">
+      {
+        isLoading ? <Loader size="sm"/> : null
+      }
+      {/* <Modal modalID="clientsModal" title="Eliminar registro" message={message} callback={() => {}}/>
+      <button className='button btnAdd' data-bs-toggle="modal" data-bs-target="#clientsModal">Modal</button> */}
+      
       {/* Vista para ciertos usuarios como secretarias */}
       {/* Las secretarias modifican los clientes */}
 
@@ -76,8 +93,13 @@ function ClientsView() {
                 <td>{data.Telefono}</td>
                 <td>{data.Email}</td>
                 <td>
-                  <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.ID)}>Editar</button>
-                  <button className='button btnDelete'>Eliminar</button>
+                  <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.ID)}>
+                    <i className="fa fa-pen-to-square"></i>Editar
+                  </button>
+                  <button className='button btnDelete'>
+                    <i className="fa fa-trash"></i>
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             )
@@ -91,7 +113,7 @@ function ClientsView() {
 
 function UsersView() {
   return (
-    <div>
+    <div className="homeContainer">
       {/* Vista para administradores */}
       {/* Los administradores modifican los usuarios */}
       <table className="table table-striped table-hove">

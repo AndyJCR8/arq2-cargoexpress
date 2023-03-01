@@ -1,7 +1,7 @@
 import '../Sass/App.scss'
 import { useState, useEffect } from 'react'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
-import Home from '../Pages/Home';
+import Home from '../Pages/Home/Home';
 import AddUser from '../Pages/Users/AddUser';
 import EditUser from '../Pages/Users/EditUser';
 import Login from '../Pages/Login/Login';
@@ -10,9 +10,8 @@ import ProtectRoutes from '../Services/ProtectRoutes';
 import EditClient from '../Pages/Clients/editClient';
 import AddClient from '../Pages/Clients/addClient';
 
-
 function App() {
-  const [user, setUser] = useState({ authenticated: true, role: 1});
+  const [user, setUser] = useState({ authenticated: true, role: 2});
   
   return (
     <div className="App">
@@ -26,13 +25,13 @@ function App() {
                 <p className='title'>CargoExpress</p>
               </div>
               <div className='buttonsContainer'>
-                <Link to="/" className='nvItem button btnAdd'>Inicio</Link>
+                <Link to="/" className='nvItem button btnAdd'><i className='fa fa-home'></i>Inicio</Link>
                 {
                   /*SI EL ROL DEL USUARIO ES IGUAL A 1 SE GENERA EL BOTÓN PARA AÑADIR UN NUEVO USUARIO*/
                   user.role == 1 ?
                   <>
-                    <Link to="addUser" className='nvItem button btnAdd'>Nuevo usuario</Link>
-                  </> : user.role == 2 ? <Link to="addClient" className='nvItem button btnAdd'>Nuevo cliente</Link>
+                    <Link to="addUser" className='nvItem button btnAdd'><i className='fa fa-plus'></i>Nuevo usuario</Link>
+                  </> : user.role == 2 ? <Link to="addClient" className='nvItem button btnAdd'><i className='fa fa-plus'></i>Nuevo cliente</Link>
                   : null
                 }
               </div>
