@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Loader from './Loader';
 
-export default function Modal({modalID, title, message, callback}) {
+export default function Modal({modalID, title, message, callback, callbackData}) {
+
+  const yesClicked = () => {
+    callback(callbackData)
+  }
+
   return (
     <div className="modal fade" tabIndex="-1" id={modalID}>
       <div className="modal-dialog modal-dialog-centered">
@@ -13,8 +19,8 @@ export default function Modal({modalID, title, message, callback}) {
             <p>{message}</p>
           </div>
           <div className="modal-footer">
-            <button type="button" className="button btnAdd">Sí</button>
-            <button type="button" className="button btnSecondary" data-bs-dismiss="modal">No</button>
+            <button type="button" className="button btnDelete"><i className='fa fa-check' onClick={() => { yesClicked() }}></i>Sí</button>
+            <button type="button" className="button btnSecondary" data-bs-dismiss="modal"><i className='fa fa-xmark'></i>No</button>
           </div>
         </div>
       </div>
