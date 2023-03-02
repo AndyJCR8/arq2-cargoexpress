@@ -16,6 +16,22 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 #Defino la ruta y el método
 #@cross_origin
+
+@app.route('/tiposusuario', methods=['GET'])
+def listar_tipos():
+    try:
+        cursor = conexion.connection.cursor()
+        sql="SELECT idTipoUsuario, Tipousuario FROM tbltipousuario"
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+        tipos = []
+        for i in datos:
+            tipo={'idTipoUsuario': i[0],'Tipousuario':i[1]}
+            tipos.append(tipo)
+        return jsonify({'tipos':tipos, 'mensaje':'tipos listados'})
+    except Exception as ex:
+        return jsonify({'mensaje':ex})
+
 @app.route('/usuarios',methods=['GET'])
 def listar_usuarios(): #Función para listar usuarios
     try:
