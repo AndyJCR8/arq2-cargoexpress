@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 from config import config
 from flask_cors import CORS, cross_origin
@@ -31,6 +31,8 @@ def listar_tipos():
         return jsonify({'tipos':tipos, 'mensaje':'tipos listados'})
     except Exception as ex:
         return jsonify({'mensaje':ex})
+
+
 
 @app.route('/usuarios',methods=['GET'])
 def listar_usuarios(): #Función para listar usuarios
@@ -312,7 +314,20 @@ def actualizarOficina(idoficina):
     except Exception as ex:
          return jsonify({'mensaje':"Error"}) 
 
-
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        cursor = conexion.connection.cursor() 
+        sql="SELECT IdUsuario FROM tblusuarios WHERE Usuario='{0}' AND Contraseña='{1}'".format(request.json['Usuario'], request.json['Contraseña'])
+        cursor.execute(sql)#Se ejecuta el sql
+        datos = cursor.fetchone()
+        if(datos==None):
+            return jsonify({'mensaje':'false'}) 
+        else:
+            return jsonify({'mensaje':datos})
+    except Exception as ex:
+         return jsonify({'mensaje':ex}) 
+    
 
 def pagina_no_encontrada(error):
     return"<h1>La página que intentas buscar no existe :/ </h1>", 404
