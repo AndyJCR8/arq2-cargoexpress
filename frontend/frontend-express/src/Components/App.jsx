@@ -11,7 +11,7 @@ import EditClient from '../Pages/Clients/editClient';
 import AddClient from '../Pages/Clients/addClient';
 
 function App() {
-  const [user, setUser] = useState({ authenticated: true, role: 2});
+  const [user, setUser] = useState({ authenticated: true, role: 1});
   
   return (
     <div className="App">

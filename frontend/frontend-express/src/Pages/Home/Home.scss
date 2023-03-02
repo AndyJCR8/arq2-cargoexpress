@@ -1,9 +1,34 @@
 .homeContainer {
   display: flex; flex-direction: column;
   margin: 1rem 2rem;
+  position: relative;
   .loaderContainer {
     align-items: flex-end;
     margin: 1rem 2rem;
+    position: absolute;
+    right: 0;
+    top: 2rem;
+  }
+  .titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    .title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+  .modal {
+    .modal-header {
+      i { color: #ec5f5f; margin-right: 1rem; font-size: 1.5rem; }
+    }
+    .modal-body {
+      text-align: center;
+      font-size: 1.15rem;
+      p { margin-bottom: 0; i { font-size: 1.25rem; margin-right: 0.5rem; }}
+    }
   }
   .table {
     text-align: center;
@@ -12,5 +37,12 @@
       margin: 0 0.5rem;
     }
   }
-  
+  .noDataContainer {
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2rem;
+    .noDataText {
+      font-weight: 100;
+      font-size: 2rem;
+    }
+  }
 }
