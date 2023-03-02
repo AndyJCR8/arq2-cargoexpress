@@ -193,7 +193,7 @@ function UsersView() {
                     <td>{data.Telefono}</td>
                     <td>{data.IdTipoUsuario}</td>
                     <td>
-                      <button className='button btnEdit' onClick={() => navigate("/editUser/" + data.ID)}>
+                      <button className='button btnEdit' onClick={() => navigate("/editUser/" + data.IdUsuario)}>
                         <i className="fa fa-pen-to-square"></i>Editar
                       </button>
                       <button onClick={() => { onClickDelete(data) }} className='button btnDelete' data-bs-toggle="modal" data-bs-target="#usersModal">

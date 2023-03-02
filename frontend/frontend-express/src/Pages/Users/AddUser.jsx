@@ -115,7 +115,7 @@ export default function AddUser() {
           </div>
         </div>
         <div className='footer'>
-          <button type="submit" className="button btnAdd">Añadir Usuario</button>
+          <button type="submit" className="button btnAdd"><i className='fa fa-user-astronaut'></i>Añadir usuario</button>
           <div id='formResult' className='resultContainer'>
             <p className='resultText'>{resText}</p>
           </div>
@@ -124,7 +124,7 @@ export default function AddUser() {
             <Loader size="sm"/> : null
           }
         </div>
-    </form>
+      </form>
     </div>
   )
 }

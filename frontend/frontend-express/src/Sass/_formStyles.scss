@@ -65,5 +65,23 @@
         padding: 0.5rem 2rem;
       }
     }
+
+  }
+}
+
+.dataLoader {
+  display: flex; flex-direction: column;
+  top: 50%;
+  left: 50%;
+  font-size: 1.25rem;
+  position: absolute;
+  .loaderContainer { scale: 2; }
+}
+
+.notFound {
+  display: flex; align-items: center; justify-content: center;
+  .notFoundTitle {
+    font-size: 2rem;
+    margin-top: 3rem;
   }
 }

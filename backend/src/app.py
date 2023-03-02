@@ -119,9 +119,10 @@ def actualizarUsuario(idusuario):
         sql="SELECT Usuario FROM tblusuarios WHERE tblusuarios.Usuario = '{0}' AND tblusuarios.IdUsuario!={1}".format(request.json['Usuario'],idusuario)
         cursor.execute(sql)#Se ejecuta el sql
         datos = cursor.fetchone()
+        
         if(datos==None):
             sql = """UPDATE tblusuarios 
-            SET Usuario='{0}', Nombre='{1}', Email='{2}', Telefono='{3}', Contraseña='{4}', IdOficina={5}, idTipoUsuario={6}""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'])
+            SET Usuario='{0}', Nombre='{1}', Email='{2}', Telefono='{3}', Contraseña='{4}', IdOficina={5}, idTipoUsuario={6} where IdUsuario={7}""".format(request.json['Usuario'],request.json['Nombre'],request.json['Email'],request.json['Telefono'],request.json['Contraseña'],request.json['IdOficina'], request.json['idTipoUsuario'], idusuario)
             cursor.execute(sql)
             conexion.connection.commit() # confirma la acción de inserción
             #print(request.json)
