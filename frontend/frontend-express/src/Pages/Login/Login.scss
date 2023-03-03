@@ -35,9 +35,31 @@
     }
     .footer {
       display: flex; justify-content: center;
+      position: relative;
       .loginBtn {
         margin-top: 2rem;
         padding: 0.5rem 2rem;
+      }
+      .loaderContainer {
+        position: absolute;
+        left: 1rem;
+        bottom: 0.85rem;
+      }
+      .errorTextContainer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        &.show { .errorText { opacity: 1; } }
+        .errorText {
+          padding: 0.25rem 0.75rem;
+          border-radius: 10px;
+          font-size: 0.8rem;
+          opacity: 0;
+          margin-bottom: 0.5rem;
+          
+          background-color: rgb(255, 142, 142);
+          transition: all ease-in-out 100ms;
+        }
       }
     }
   }

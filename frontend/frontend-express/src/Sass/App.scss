@@ -7,6 +7,9 @@
   
   .nvItem {
     margin: 0 0.5rem;
+    &.btnLogout {
+      margin-left: auto;
+    }
   }
 
   .titleContainer {
@@ -24,6 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
   }
 }
 

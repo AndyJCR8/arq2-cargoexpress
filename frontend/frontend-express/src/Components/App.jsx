@@ -11,13 +11,13 @@ import EditClient from '../Pages/Clientes/EditClient';
 import AddClient from '../Pages/Clientes/AddClient';
 
 function App() {
-  const [user, setUser] = useState({ authenticated: true, role: 2});
+  const [user, setUser] = useState({ authenticated: false });
   
   return (
     <div className="App">
       <Routes>
         <Route path='/login' element={<Login setUser={setUser}/>}/>
-        <Route path='/logout' element={<Logout/>}/>
+        <Route path='/logout' element={<Logout setUser={setUser}/>}/>
         <Route element= {
           <ProtectRoutes user={user} setUser={setUser}>
             <nav className='Navbar'>
@@ -34,6 +34,7 @@ function App() {
                   </> : user.role == 2 ? <Link to="addClient" className='nvItem button btnAdd'><i className='fa fa-plus'></i>Nuevo cliente</Link>
                   : null
                 }
+                <Link to="/logout" className='nvItem button btnDelete btnLogout'><i className='fa fa-arrow-right-from-bracket'></i>Cerrar sesión</Link>
               </div>
             </nav>
             <div className='AppContainer'>

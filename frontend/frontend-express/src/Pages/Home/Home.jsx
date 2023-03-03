@@ -46,14 +46,15 @@ function ClientsView() {
   useEffect(() => {
     setIsLoading(true);
 
-    const getClients = async () => {
+    (async () => {
       const { data } = await getData({PATH: "clientes", METHOD: "GET"})();
+      
       //console.log(data.Clientes);
       if(!data.Clientes) setClients([]);
       else setClients(data.Clientes);
       setIsLoading(false);
-    }
-    getClients();
+    })()
+    
   }, [, showInfo]);
 
   return (
