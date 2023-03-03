@@ -96,7 +96,7 @@ function ClientsView() {
                     <td>{data.Telefono}</td>
                     <td>{data.Email}</td>
                     <td>
-                      <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.ID)}>
+                      <button className='button btnEdit' onClick={() => navigate("/editClient/" + data.idCliente)}>
                         <i className="fa fa-pen-to-square"></i>Editar
                       </button>
                       <button onClick={() => { onClickDelete(data) }} className='button btnDelete' data-bs-toggle="modal" data-bs-target="#clientsModal">

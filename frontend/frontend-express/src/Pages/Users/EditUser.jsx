@@ -50,7 +50,7 @@ export default function EditUser() {
   }
 
   useEffect(() => {
-    const getOffices = async () => {
+    (async () => {
       setDataLoading(true);
       const requests = [getData({PATH: "oficinas", METHOD: "GET"})(), getData({PATH: "tiposusuario", METHOD: "GET"})(), getData({PATH: `usuarios/${id}`, METHOD: "GET"})()];
       const results = await Promise.allSettled(requests);
@@ -62,8 +62,7 @@ export default function EditUser() {
       setDataLoading(false);
       //console.log(usuario);
       //setOficinas(data.oficinas);
-    }
-    getOffices();
+    })()
     
   }, []);
 

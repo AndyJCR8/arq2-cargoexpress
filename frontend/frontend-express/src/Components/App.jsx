@@ -7,11 +7,11 @@ import EditUser from '../Pages/Users/EditUser';
 import Login from '../Pages/Login/Login';
 import Logout from '../Pages/Login/Logout';
 import ProtectRoutes from '../Services/ProtectRoutes';
-import EditClient from '../Pages/Clients/editClient';
-import AddClient from '../Pages/Clients/addClient';
+import EditClient from '../Pages/Clientes/EditClient';
+import AddClient from '../Pages/Clientes/AddClient';
 
 function App() {
-  const [user, setUser] = useState({ authenticated: true, role: 1});
+  const [user, setUser] = useState({ authenticated: true, role: 2});
   
   return (
     <div className="App">

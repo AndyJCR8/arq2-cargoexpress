@@ -46,7 +46,7 @@ export default function AddUser() {
   }
 
   useEffect(() => {
-    const getOffices = async () => {
+    (async () => {
       const requests = [getData({PATH: "oficinas", METHOD: "GET"})(), getData({PATH: "tiposusuario", METHOD: "GET"})()];
       const results = await Promise.allSettled(requests);
       const [{value: {data: { oficinas: offices }}}, {value: {data: { tipos: userTypes }}}] = results;
@@ -55,8 +55,8 @@ export default function AddUser() {
       setRoles(userTypes);
       //console.log(offices, " ", userTypes);
       //setOficinas(data.oficinas);
-    }
-    getOffices();
+    })();
+    
   }, []);
 
   return (
